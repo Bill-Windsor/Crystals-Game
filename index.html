@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="assets/css/style.css"/>
+  <link rel="icon" href="assets/images/favicon.jpg" type="image/jpg" />
+  <link rel="shortcut icon" href="assets/images/favicon_crystal.ico" />
+  <title>Crystal Selecting Game</title>
+
+</head>
+
+<body>
+
+  <header id="top_header">
+      <h1> <img src="assets/images/Letter_C_Embroidery.jpg" alt="Cursive A" width="70" height="70"/>   Crystal Number Game </h1>
+  </header>
+
+  <style type="text/css">
+    .crystal-image {
+      width: 300px;
+      height: 300px;
+    }
+  </style>
+
+  <div class="container">
+
+  <div id="crystals">
+  </div>
+
+  <h1>  Crystal Game: Number to Guess = <span id="number-to-guess"></span></h1> <br>
+
+
+  <div id="activeWordQueue">
+
+  <h3>Please click a crystal to determine its value.</h3> <br>
+
+	<p id="userComm1">current number total =  </p>
+
+	<p id="userComm2">"win" or "loss"</p>
+
+	<p id="userComm3">select play again</p>
+
+	<p id="userComm4">play again: Y/N</p>
+
+	<p id="winsSection">Number of wins:  <span id="numWins"></span></p>
+
+	<p id="lossesSection">Number of losses:  <span id="numLosses"></span></p>
+
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+
+var winsCount = 0;
+var lossesCount = 0;
+var gameComplete = false;
+var gameAgain = "";
+var playAgain = true;
+
+//	Note: the while loop following, covering the whole game and testing for "Play another game?", 
+// caused the crystals to disappear (?), so I have deleted it.
+//	Q: does the while loop cause a scope problem with the jQuery content?
+//
+//	while (playAgain === true)  {
+
+document.getElementById("userComm1").innerHTML = "Your current number total =  ";
+
+//  var targetNumber = (Math.floor(100*(Math.random()) + 20) );
+  var targetNumber = (Math.floor(100*(Math.random()) + 19) );
+  console.log("targetNumber = ", targetNumber);
+
+  $("#number-to-guess").text(targetNumber);
+  var counter = 0;
+
+var numberOptions = new Array(4);
+  for (var i = 0; i < 4; i++) {
+  numberOptions[i] = Math.floor((Math.random() * 12) + 1 );
+  }
+// Console log the initial four random numbers generated.
+  console.log("numberOptions:  " + numberOptions[0] + " ,  " + numberOptions[1] + " ,  " + numberOptions[2] + " ,  " + numberOptions[3]);
+
+// Check to see if there are any duplicate numbers; and if so, then generate a new RAND for a duplicate value.
+  for (var i = 0; i < 3; i++)  {
+     for (var j = i+1; j < 4; j++)  {
+      if (numberOptions[i] === numberOptions[j])  {
+        numberOptions[j] = Math.floor((Math.random() * 12) + 1 );  
+      }
+    }
+  }
+  // Console log the initial four random numbers generated.
+  console.log("numberOptions:  " + numberOptions[0] + " ,  " + numberOptions[1] + " ,  " + numberOptions[2] + " ,  " + numberOptions[3]);
+
+/*
+
+//  Some I/O stuff here!!
+    while ((remainingLetters > 0) & (maxWrongGuesses != 0))  {
+
+      document.addEventListener('keypress', (event) => {
+      guess = event.key;
+      });
+
+      lettersGuessed = lettersGuessed.concat(guess);
+
+      document.getElementById("lettersLog").innerHTML = lettersGuessed;
+      document.getElementById("numGuessesRemaining").innerHTML = maxWrongGuesses;
+//  End new I/O stuff
+
+
+    while ((remainingLetters > 0) & (maxWrongGuesses != 0))  {
+
+      document.addEventListener('keypress', (event) => {
+      guess = event.key;
+      });
+
+      lettersGuessed = lettersGuessed.concat(guess);
+      document.getElementById("lettersLog").innerHTML = lettersGuessed;
+
+document onclick = function event
+var user event.key
+var user key.event
+
+//  console.log(answerArray.join(" "));
+//  console.log("Good job! The answer is: " + mysteryWord);
+
+*/
+
+var imgArray = new Array();
+imgArray[0] = "Crystal1.jpg";
+imgArray[1] = "Crystal2.jpg";
+imgArray[2] = "Crystal3.jpg";
+imgArray[3] = "Crystal4.jpg";
+
+
+  // Next we create a for loop to create crystals for every numberOption.
+  for (var i = 0; i < numberOptions.length; i++) {
+
+    // For each iteration, we will create an imageCrystal
+    var imageCrystal = $("<img>");
+
+    // First each crystal will be given the class ".crystal-image".
+    // This will allow the CSS to take effect.
+    imageCrystal.addClass("crystal-image");
+
+    // Each imageCrystal will be given a src link to the crystal image
+    imageCrystal.attr("src", imgArray[i]);
+
+    // Each imageCrystal will be given a data attribute called data-crystalValue.
+    // This data attribute will be set equal to the array value.
+    imageCrystal.attr("data-crystalvalue", numberOptions[i]);
+
+    // Lastly, each crystal image (with all its classes and attributes) will get added to the page.
+    $("#crystals").append(imageCrystal);
+  }
+
+  // This time, our click event applies to every single crystal on the page. Not just one.
+  $(".crystal-image").on("click", function() {
+
+    // Determining the crystal's value requires us to extract the value from the data attribute.
+    // Using the $(this) keyword specifies that we should be extracting the crystal value of the clicked crystal.
+    // Using the .attr("data-crystalvalue") allows us to grab the value out of the "data-crystalvalue" attribute.
+    // Since attributes on HTML elements are strings, we must convert it to an integer before adding to the counter
+    
+    var crystalValue = ($(this).attr("data-crystalvalue"));
+    crystalValue = parseInt(crystalValue);
+ 
+    // We then add the crystalValue to the user's "counter" which is a global variable.
+    // Every click, from every crystal adds to the global counter.
+    counter += crystalValue;
+
+
+//  alert("New score: " + counter);
+    document.getElementById("userComm1").innerHTML = "Your current number total =  " + counter;
+
+    if (counter === targetNumber) {
+//    Tell user: "You win!";
+	  gameComplete = true;
+      winsCount++;
+      document.getElementById("userComm2").innerHTML = "Congratulations, you win!";
+      document.getElementById("winsSection").innerHTML = "Number of wins:  " + winsCount;
+      document.getElementById("numWins").innerHTML = winsCount;
+
+    }
+    else if (counter > targetNumber) {
+//    Tell user: "Sorry, you lose.";
+	  gameComplete = true;
+	  lossesCount++;
+      document.getElementById("userComm2").innerHTML = "Sorry, you lose.";
+      document.getElementById("lossesSection").innerHTML = "Number of losses:  " + lossesCount;
+      document.getElementById("numLosses").innerHTML = lossesCount;
+  	}
+
+  	if (gameComplete === true)  {
+  	  gameComplete = false;
+      document.getElementById("userComm3").innerHTML = "Play again? If yes, ";
+      document.getElementById("userComm4").innerHTML = "Click Here";
+
+  	}
+  });
+
+/*
+  	gameAgain = prompt("Would you like to play again?");
+      if (gameAgain === "Y")  {
+        playAgain = true;
+      }
+      else if (gameAgain === "N")  {
+        playAgain = false;
+        }
+      else if (gameAgain === null)  {
+        playAgain = false;
+        }
+      else  { 
+        alert("Please enter one letter answer, Y for Yes, or N for No.");
+        gameAgain = prompt("Play again? (Y/N)");
+        }
+
+		BUTTONS here, Yes or No
+*/
+
+  </script>
+</body>
+</html>
